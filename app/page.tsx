@@ -913,15 +913,15 @@ function StatsStrip({ shoes }: { shoes: Shoe[] }) {
   ];
 
   return (
-    <div className="grid grid-cols-3 sm:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
       {stats.map((s) => (
         <div
           key={s.label}
-          className="bg-card border border-border rounded-2xl px-4 py-4 flex items-center gap-3 shadow-sm"
+          className="bg-card border border-border rounded-2xl px-3 py-3 sm:px-4 sm:py-4 flex items-center gap-2.5 sm:gap-3 shadow-sm"
         >
           <div
             className={[
-              "w-9 h-9 rounded-xl flex items-center justify-center shrink-0",
+              "w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center shrink-0",
               s.bg,
               s.fg,
             ].join(" ")}
@@ -929,10 +929,10 @@ function StatsStrip({ shoes }: { shoes: Shoe[] }) {
             {s.icon}
           </div>
           <div className="min-w-0">
-            <p className="text-lg font-extrabold leading-none tabular-nums">
+            <p className="text-sm sm:text-lg font-extrabold leading-none tabular-nums">
               {s.value}
             </p>
-            <p className="text-[11px] text-muted-foreground mt-0.5 truncate">
+            <p className="text-[10px] sm:text-[11px] text-muted-foreground mt-0.5 leading-tight">
               {s.label}
             </p>
           </div>
