@@ -16,7 +16,6 @@ import {
   AlertCircle,
   Check,
   Trash2,
-  Sparkles,
   BarChart3,
   Camera,
   ImagePlus,
@@ -1190,8 +1189,8 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center gap-3">
           {/* Logo */}
           <div className="flex items-center gap-2.5 shrink-0">
-            <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center">
-              <Sparkles className="w-4 h-4 text-primary-foreground" />
+            <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center text-primary-foreground font-extrabold text-sm">
+              T
             </div>
             <div className="hidden sm:block">
               <p className="text-sm font-extrabold leading-none tracking-tight">
