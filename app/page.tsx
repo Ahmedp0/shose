@@ -342,7 +342,7 @@ function EditModal({
     ...shoe,
     sizes: shoe.sizes.map((s) => ({ ...s })),
   });
-  const [errors, setErrors] = useState<{ image?: string; name?: string; supplier?: string; color?: string; cost_price?: string; price?: string }>({});
+  const [errors, setErrors] = useState<{ image?: string }>({});
   const [imgPreview, setImgPreview] = useState<string>(shoe.image);
 
   const cameraRef = useRef<HTMLInputElement>(null);
@@ -415,11 +415,6 @@ function EditModal({
   const handleSave = () => {
     const errs: typeof errors = {};
     if (!imgPreview) errs.image = "الصورة مطلوبة";
-    if (!form.name.trim()) errs.name = "اسم الحذاء مطلوب";
-    if (!form.supplier.trim()) errs.supplier = "اسم المورد مطلوب";
-    if (!form.color.trim()) errs.color = "اللون مطلوب";
-    if (form.cost_price < 0) errs.cost_price = "سعر التكلفة لا يمكن أن يكون سالبًا";
-    if (!form.price || form.price <= 0) errs.price = "السعر مطلوب";
     if (Object.keys(errs).length) {
       setErrors(errs);
       return;
@@ -530,91 +525,6 @@ function EditModal({
         {errors.image && (
           <p className="text-[11px] text-destructive mt-2">{errors.image}</p>
         )}
-      </div>
-
-      {/* ── Fields ── */}
-      <div className="grid grid-cols-2 gap-3">
-        <div>
-          <label className="text-xs mb-1.5 flex items-center gap-1">
-            اسم الحذاء
-            <span className="text-destructive">*</span>
-          </label>
-          <input
-            type="text"
-            value={form.name}
-            onChange={(e) => field("name", e.target.value)}
-            placeholder="مثال: Air Max 270"
-            className={inputCls(!!errors.name)}
-          />
-          {errors.name && (
-            <p className="text-[11px] text-destructive mt-1">{errors.name}</p>
-          )}
-        </div>
-        <div>
-          <label className="text-xs mb-1.5 flex items-center gap-1">
-            اسم المورد
-            <span className="text-destructive">*</span>
-          </label>
-          <input
-            type="text"
-            value={form.supplier}
-            onChange={(e) => field("supplier", e.target.value)}
-            placeholder="مثال: أحمد"
-            className={inputCls(!!errors.supplier)}
-          />
-          {errors.supplier && (
-            <p className="text-[11px] text-destructive mt-1">{errors.supplier}</p>
-          )}
-        </div>
-        <div>
-          <label className="text-xs mb-1.5 flex items-center gap-1">
-            اللون
-            <span className="text-destructive">*</span>
-          </label>
-          <input
-            type="text"
-            value={form.color}
-            onChange={(e) => field("color", e.target.value)}
-            placeholder="مثال: أبيض"
-            className={inputCls(!!errors.color)}
-          />
-          {errors.color && (
-            <p className="text-[11px] text-destructive mt-1">{errors.color}</p>
-          )}
-        </div>
-        <div>
-          <label className="text-xs mb-1.5 flex items-center gap-1">
-            سعر التكلفة (د.ج)
-          </label>
-          <input
-            type="number"
-            min="0"
-            value={form.cost_price ?? ""}
-            onChange={(e) => field("cost_price", Number(e.target.value))}
-            placeholder="0"
-            className={inputCls(!!errors.cost_price)}
-          />
-          {errors.cost_price && (
-            <p className="text-[11px] text-destructive mt-1">{errors.cost_price}</p>
-          )}
-        </div>
-        <div>
-          <label className="text-xs mb-1.5 flex items-center gap-1">
-            السعر (د.ج)
-            <span className="text-destructive">*</span>
-          </label>
-          <input
-            type="number"
-            min="0"
-            value={form.price || ""}
-            onChange={(e) => field("price", Number(e.target.value))}
-            placeholder="0"
-            className={inputCls(!!errors.price)}
-          />
-          {errors.price && (
-            <p className="text-[11px] text-destructive mt-1">{errors.price}</p>
-          )}
-        </div>
       </div>
 
       {/* ── Sizes ── */}
