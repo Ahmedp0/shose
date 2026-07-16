@@ -387,13 +387,15 @@ function EditModal({
     setForm((f) => ({ ...f, image: "" }));
   };
 
-  const setSize = (i: number, key: keyof SizeEntry, val: number) =>
+  const setSize = (i: number, key: keyof SizeEntry, val: number | string) => {
+    const normalized = typeof val === "string" ? (val === "" ? 0 : Number(val)) : val;
     setForm((f) => ({
       ...f,
       sizes: f.sizes.map((s, idx) =>
-        idx === i ? { ...s, [key]: Math.max(0, val) } : s,
+        idx === i ? { ...s, [key]: Math.max(0, normalized) } : s,
       ),
     }));
+  };
 
   const addSize = () => {
     const next =
@@ -558,10 +560,8 @@ function EditModal({
                     </p>
                     <input
                       type="number"
-                      value={s.size}
-                      onChange={(e) =>
-                        setSize(i, "size", Number(e.target.value))
-                      }
+                      value={s.size || ""}
+                      onChange={(e) => setSize(i, "size", e.target.value)}
                       className="w-full bg-transparent text-sm font-bold focus:outline-none"
                     />
                   </div>
@@ -572,10 +572,8 @@ function EditModal({
                     </p>
                     <input
                       type="number"
-                      value={s.quantity}
-                      onChange={(e) =>
-                        setSize(i, "quantity", Number(e.target.value))
-                      }
+                      value={s.quantity || ""}
+                      onChange={(e) => setSize(i, "quantity", e.target.value)}
                       className="w-full bg-transparent text-sm font-bold focus:outline-none"
                     />
                   </div>
