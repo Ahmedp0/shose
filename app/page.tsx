@@ -721,9 +721,11 @@ function ActionBtn({
 function ShoeCard({
   shoe,
   onAction,
+  onDelete,
 }: {
   shoe: Shoe;
   onAction: (mode: ModalMode) => void;
+  onDelete: (id: string) => void;
 }) {
   const total = totalAvail(shoe);
   const isOut = total === 0;
@@ -847,7 +849,7 @@ function ShoeCard({
         )}
 
         {/* Actions */}
-        <div className="grid grid-cols-2 gap-2 mt-auto pt-1">
+        <div className="grid grid-cols-3 gap-2 mt-auto pt-1">
           <ActionBtn
             icon={<ShoppingCart className="w-4 h-4" />}
             label="بيع"
@@ -862,6 +864,13 @@ function ShoeCard({
             onClick={() => onAction("edit")}
             gradientCls="bg-muted border border-border hover:bg-muted/80"
             colorCls="text-muted-foreground"
+          />
+          <ActionBtn
+            icon={<Trash2 className="w-4 h-4" />}
+            label="حذف"
+            onClick={() => onDelete(shoe.id)}
+            gradientCls="bg-destructive/10 dark:bg-destructive/15 border border-destructive/20 hover:bg-destructive/20"
+            colorCls="text-destructive"
           />
         </div>
       </div>
@@ -1087,6 +1096,26 @@ export default function Home() {
     setSaving(false);
   };
 
+  const handleDelete = async (shoeId: string) => {
+    if (!window.confirm("هل تريد حذف هذا الحذاء؟")) return;
+
+    setSaving(true);
+    try {
+      const res = await fetch(`/api/shoes/${shoeId}`, { method: "DELETE" });
+      const payload = await res.json().catch(() => ({}));
+
+      if (res.ok) {
+        await fetchAll();
+        showToast("تم حذف الحذاء بنجاح");
+      } else {
+        showToast(payload.error || "تعذر حذف الحذاء");
+      }
+    } catch {
+      showToast("خطأ في الاتصال بالخادم");
+    }
+    setSaving(false);
+  };
+
   const handleAddShoe = () => {
     const tempId = "new_" + Date.now();
     const newShoe: Shoe = {
@@ -1256,6 +1285,7 @@ export default function Home() {
                       key={shoe.id}
                       shoe={shoe}
                       onAction={(m) => openModal(shoe.id, m)}
+                      onDelete={handleDelete}
                     />
                   ))
                 )}

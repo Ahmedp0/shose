@@ -88,6 +88,28 @@ export async function DELETE(
 ) {
   const { id } = await params;
 
+  const { data: pendingOrders, error: pendingError } = await supabase
+    .from("pending_orders")
+    .select("id")
+    .eq("shoe_id", id);
+
+  if (pendingError) {
+    return NextResponse.json({ error: pendingError.message }, { status: 500 });
+  }
+
+  const { data: completedOrders, error: completedError } = await supabase
+    .from("completed_orders")
+    .select("id")
+    .eq("shoe_id", id);
+
+  if (completedError) {
+    return NextResponse.json({ error: completedError.message }, { status: 500 });
+  }
+
+  if ((pendingOrders?.length ?? 0) > 0 || (completedOrders?.length ?? 0) > 0) {
+    return NextResponse.json({ error: "لا يمكن حذف الحذاء لأنه مرتبط بطلبات سابقة" }, { status: 409 });
+  }
+
   const { error } = await supabase.from("shoes").delete().eq("id", id);
 
   if (error) {
