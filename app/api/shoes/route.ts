@@ -34,20 +34,8 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { shoe, sizes } = body;
 
-    if (!shoe?.name?.trim() || !shoe?.supplier?.trim() || !shoe?.color?.trim()) {
-      return NextResponse.json({ error: "الرجاء إدخال اسم الحذاء والمورد واللون" }, { status: 400 });
-    }
-
-    const price = Number(shoe.price);
-    const costPrice = Number(shoe.cost_price ?? 0);
-
-    if (!Number.isFinite(price) || price < 0) {
-      return NextResponse.json({ error: "السعر غير صالح" }, { status: 400 });
-    }
-
-    if (!Number.isFinite(costPrice) || costPrice < 0) {
-      return NextResponse.json({ error: "سعر التكلفة غير صالح" }, { status: 400 });
-    }
+    const price = Number.isFinite(Number(shoe?.price ?? 0)) ? Number(shoe.price ?? 0) : 0;
+    const costPrice = Number.isFinite(Number(shoe?.cost_price ?? 0)) ? Number(shoe.cost_price ?? 0) : 0;
 
     const normalizedSizes = Array.isArray(sizes)
       ? sizes
@@ -61,12 +49,12 @@ export async function POST(req: NextRequest) {
     const { data: newShoe, error: shoeError } = await supabase
       .from("shoes")
       .insert({
-        name: shoe.name.trim(),
-        supplier: shoe.supplier.trim(),
-        color: shoe.color.trim(),
+        name: (shoe?.name ?? "").toString().trim(),
+        supplier: (shoe?.supplier ?? "").toString().trim(),
+        color: (shoe?.color ?? "").toString().trim(),
         cost_price: costPrice,
         price,
-        image: shoe.image || "",
+        image: (shoe?.image ?? "").toString() || "",
       })
       .select()
       .single();

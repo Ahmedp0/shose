@@ -264,7 +264,7 @@ function ActionModal({
               {mode === "sell" && (
                 <div className="space-y-3">
                   <div>
-                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5 flex items-center gap-1 block">
+                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5 flex items-center gap-1">
                       اسم المشتري
                       <span className="text-red-500">*</span>
                     </label>
@@ -278,7 +278,7 @@ function ActionModal({
                     />
                   </div>
                   <div>
-                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5 flex items-center gap-1 block">
+                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5 flex items-center gap-1">
                       المحافظة
                       <span className="text-destructive">*</span>
                     </label>
